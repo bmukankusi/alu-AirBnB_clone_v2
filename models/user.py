@@ -1,27 +1,23 @@
 #!/usr/bin/python3
 """This module defines a class User"""
 from models.base_model import BaseModel, Base
+from models import storage_t
 from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
+
 
 class User(BaseModel, Base):
-    """
-    User class representing a user in the system.
-
-    Attributes:
-        __tablename__ (str): Represents the table name, 'users'.
-        email (str): Represents a column containing a string (128 characters).
-                     It can't be null.
-        password (str): Represents a column containing a string (128 characters).
-                        It can't be null.
-        first_name (str): Represents a column containing a string (128 characters).
-                          It can be null.
-        last_name (str): Represents a column containing a string (128 characters).
-                         It can be null.
-    """
-
-    __tablename__ = 'users'
-
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128), nullable=True)
-    last_name = Column(String(128), nullable=True)
+    """This class defines a user by various attributes"""
+    if storage_t == "db":
+        __tablename__ = 'users'
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128))
+        last_name = Column(String(128))
+        places = relationship('Place', backref='user')
+        reviews = relationship('Review', backref='user')
+    else:
+        email = ''
+        password = ''
+        first_name = ''
+        last_name = ''
