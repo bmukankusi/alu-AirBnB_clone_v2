@@ -44,11 +44,3 @@ class State(BaseModel, Base):
         Calls the method delete.
         """
         models.storage.delete(self)
-# Creating a State instance
-california_state = State(name="California")
-
-# Adding the State instance to the current database session
-storage.new(california_state)
-
-# Saving changes to the database
-storage.save()
