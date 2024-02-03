@@ -3,8 +3,6 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.state import State
-from models import storage
 
 class State(BaseModel, Base):
     """
@@ -44,3 +42,4 @@ class State(BaseModel, Base):
         Calls the method delete.
         """
         models.storage.delete(self)
+
