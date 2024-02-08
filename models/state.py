@@ -1,45 +1,35 @@
 #!/usr/bin/python3
-""" State Module for HBNB project """
+"""This is the state class"""
+from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String
+import models
+from models.city import City
+import shlex
+
 
 class State(BaseModel, Base):
-    """
-    State class representing a state in the system.
-
+    """This is the class for State
     Attributes:
-        __tablename__ (str): Represents the table name, 'states'.
-        name (str): Represents a column containing a string (128 characters).
-                    It can't be null.
-        cities (relationship): Represents a relationship with the City class.
-                               Linked City objects must be automatically deleted for DBStorage.
+        name: input name
     """
-
-    __tablename__ = 'states'
-
+    __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship('City', backref='state', cascade='all, delete-orphan')
+    cities = relationship("City", cascade='all, delete, delete-orphan',
+                          backref="state")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def to_dict(self):
-        """
-        Returns a dictionary representation of the State instance.
-        Removes the key '_sa_instance_state' if it exists.
-
-        Returns:
-            dict: Dictionary representation of the State instance.
-        """
-        state_dict = super().to_dict()
-        state_dict.pop('_sa_instance_state', None)
-        return state_dict
-
-    def delete(self):
-        """
-        Deletes the current instance from the storage (models.storage).
-        Calls the method delete.
-        """
-        models.storage.delete(self)
-
+    @property
+    def cities(self):
+        var = models.storage.all()
+        lista = []
+        result = []
+        for key in var:
+            city = key.replace('.', ' ')
+            city = shlex.split(city)
+            if (city[0] == 'City'):
+                lista.append(var[key])
+        for elem in lista:
+            if (elem.state_id == self.id):
+                result.append(elem)
+        return (result)
