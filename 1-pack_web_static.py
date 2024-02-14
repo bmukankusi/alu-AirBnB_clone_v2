@@ -6,13 +6,11 @@ from fabric.api import local
 
 
 def do_pack():
-    
     """
     Generates a .tgz archive from the contents of the web_static folder.
     Returns:
         Path to the generated archive if successful, None otherwise.
     """
-   
     dt = datetime.utcnow()
     file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
                                                          dt.month,
