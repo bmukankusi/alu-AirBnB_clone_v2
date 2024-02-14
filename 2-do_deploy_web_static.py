@@ -6,13 +6,13 @@ from fabric.api import put
 from fabric.api import run
 
 env.hosts = ["174.129.103.233", "54.147.168.65"]
-
+env.user = 'ubuntu'
+env.key_filename = '~/.ssh/school'
 
 def do_deploy(archive_path):
     """Distributes an archive to web servers.
-
     Args:
-        archive_path: Path to the archive to deploy.
+        archive_path (str): The path of the archive to distribute.
     Returns:
         True if all operations have been done correctly, otherwise returns False.
     """
