@@ -9,8 +9,8 @@ env.hosts = ["174.129.103.233", "54.147.168.65"]
 
 
 def do_deploy(archive_path):
-     """
-    Distributes an archive to web servers.
+    """Distributes an archive to web servers.
+
     Args:
         archive_path: Path to the archive to deploy.
     Returns:
