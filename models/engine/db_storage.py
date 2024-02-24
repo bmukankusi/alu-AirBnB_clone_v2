@@ -35,6 +35,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """Query on the current database session"""
+        self.close()
         if cls is None:
             objs_query = self.__session.query(State).all()
             objs_query.extend(self.__session.query(City).all())
@@ -51,19 +52,23 @@ class DBStorage:
 
     def new(self, obj):
         """Add the object to the current database session"""
+        self.close()
         self.__session.add(obj)
 
     def save(self):
         """Commit all changes of the current database session"""
+        self.close()
         self.__session.commit()
 
     def delete(self, obj=None):
         """Delete from the current database session obj if not None"""
+        self.close()
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
         """reloads data from the database"""
+        self.close()
         Base.metadata.create_all(self.__engine)
         Session = scoped_session(sessionmaker(bind=self.__engine,
                                               expire_on_commit=False))
@@ -71,6 +76,6 @@ class DBStorage:
 
     def close(self):
         """call remove() method on the private session attribute """
-        self.__session.close()
-        Session.remove()
+        if self.__session is not None:
+            self.__session.close()
 
